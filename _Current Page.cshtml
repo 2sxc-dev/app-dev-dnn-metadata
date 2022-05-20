@@ -1,0 +1,27 @@
+@inherits Custom.Hybrid.Razor12
+@* This inherits statement gets you features like App, CmsContext, Data etc. - you can delete this comment *@
+@using ToSic.Sxc.Services; @* Make it easier to use https://r.2sxc.org/services *@
+@using ToSic.Sxc.Edit.Toolbar; // WIP
+@{
+  var page = CmsContext.Page;
+
+  // Temporary / internal API till the rest works
+  var apps = GetService<ToSic.Eav.Apps.AppStates>();
+  var currentZoneId = CmsContext.Site.Id;
+  var primaryAppId = apps.IdentityOfPrimary(currentZoneId);
+
+  var toolbarSvc = GetService<IToolbarService>();
+  var pageTlb = toolbarSvc.Metadata(page, "PageMetadata", parameters: "context:zoneId=169&context:appId=1803");
+}
+
+<div @Edit.TagToolbar(Content)>
+  <h1>Dev Dnn Page/Module Metadata</h1>
+  <p>
+    This is a dev app to create/edit page and module metadata for testing with skin integration. 
+  </p>
+</div>
+
+<div @Edit.TagToolbar(pageTlb)>
+  <h2>This page...</h2>
+  Hover here to get the menu for the page metadata
+</div>
