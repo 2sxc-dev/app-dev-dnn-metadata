@@ -5,13 +5,14 @@
 @{
   var page = CmsContext.Page;
 
-  // Temporary / internal API till the rest works
+  // Temporary / internal API till the rest works - this will be automatic some day...
   var apps = GetService<ToSic.Eav.Apps.AppStates>();
   var currentZoneId = CmsContext.Site.Id;
-  var primaryAppId = apps.IdentityOfPrimary(currentZoneId);
+  var siteApp = CmsContext.Site.App;
+  var primaryId = apps.IdentityOfPrimary(currentZoneId);
 
   var toolbarSvc = GetService<IToolbarService>();
-  var pageTlb = toolbarSvc.Metadata(page, "PageMetadata", parameters: "context:zoneId=169&context:appId=1803");
+  var pageTlb = toolbarSvc.Metadata(page, "PageMetadata", parameters: "context:zoneId=" + siteApp.ZoneId + "&context:appId=" + siteApp.AppId);
 }
 
 <div @Edit.TagToolbar(Content)>
@@ -23,5 +24,7 @@
 
 <div @Edit.TagToolbar(pageTlb)>
   <h2>This page...</h2>
+  ZoneId: @siteApp.ZoneId / AppId: @siteApp.AppId
+  <br>
   Hover here to get the menu for the page metadata
 </div>
